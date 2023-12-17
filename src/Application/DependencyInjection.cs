@@ -1,4 +1,5 @@
-﻿using Domain.Bookings;
+﻿using Application.Abstractions.Behaviors;
+using Domain.Bookings;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,13 @@ public static class DependencyInjection
         var assembly = typeof(DependencyInjection).Assembly;
 
         services.AddMediatR(configuration =>
-            configuration.RegisterServicesFromAssembly(assembly));
+        {
+            configuration.RegisterServicesFromAssembly(assembly);
+
+            configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
+
+            configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
+        });
 
         services.AddValidatorsFromAssembly(assembly);
 
