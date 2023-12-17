@@ -1,11 +1,12 @@
-- [Clean Architecture](#clean-architecture)
+- [Clean Architecture Fundamentals](#clean-architecture-fundamentals)
   - [Architectural Principles](#architectural-principles)
   - [Guiding Design Principles](#guiding-design-principles)
     - [Dependency Inversion](#dependency-inversion)
     - [Clean Architecture Isn't New](#clean-architecture-isnt-new)
     - [Where Should You Use It?](#where-should-you-use-it)
+- [Clean Architecture Layers](#clean-architecture-layers)
 
-# Clean Architecture
+# Clean Architecture Fundamentals
 <img src="/images/Clean_Architecture.png" width='300'>
 
 ## Architectural Principles
@@ -42,3 +43,11 @@
 - Complex business logic
 - Highly testable projects
 - Want architecture to enforce design policies
+
+# Clean Architecture Layers
+|Layer|Description|Image representation|
+|:---:|:---------|:------------------:|
+|Domain|This layer should encompass your most important enterprise logic and business rules. <ul><li>Entities <li>Value objects</li> <li>Domain events</li> <li>Domain services</li><li>Interfaces</li><li>Exceptions</li><li>Enums</li></ul>|<img src="/images/Clean_Architecture_Domain.png" width="80%">|
+|Application|Responsible for orchestrating the domain. Defines the use cases. <ul><li>Business logic</li><li>Application services</li><li>CQRS with MediatR</li></ul>|<img src="/images/Clean_Architecture_Application.png" width="80%">|
+|Infrastructure|Responsible for anything that's related to external systems <ul><li>Databases</li><li>Message brokers</li><li>Email providers</li><li>Storage services</li><li>Identity</li><li>System clock</li><li>Implements the interfaces that are defined in the layers below it</li></ul>|<img src="/images/Clean_Architecture_Infrastructure.png" width="80%">|
+|Presentation|Acts as the single point of entry into your system <ul><li>Passes along the requests to the layers below</li><li>API endpoints</li><li>Middleware</li><li>DI setup</li></ul>|<img src="/images/Clean_Architecture_Presentation.png" width="80%">|
