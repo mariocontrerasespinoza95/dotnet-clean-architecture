@@ -11,12 +11,14 @@ using Infrastructure.Authentication;
 using Infrastructure.Clock;
 using Infrastructure.Data;
 using Infrastructure.Email;
+using Infrastructure.Outbox;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Quartz;
 
 namespace Infrastructure;
 public static class DependencyInjection
@@ -33,7 +35,23 @@ public static class DependencyInjection
 
         AddAuthentication(services, configuration);
 
+        AddBackgroundJobs(services, configuration);
+
         return services;
+    }
+
+    private static void AddBackgroundJobs(IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<OutboxOptions>(configuration.GetSection("Outbox"));
+
+        services.AddQuartz(options =>
+        {
+            options.UseMicrosoftDependencyInjectionJobFactory();
+        });
+
+        services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
+
+        services.ConfigureOptions<ProcessOutboxMessagesJobSetup>();
     }
 
     private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)
