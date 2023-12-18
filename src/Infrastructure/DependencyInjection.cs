@@ -4,7 +4,7 @@ using Application.Abstractions.Data;
 using Application.Abstractions.Email;
 using Dapper;
 using Domain.Abstractions;
-using Domain.Aparments;
+using Domain.Apartments;
 using Domain.Bookings;
 using Domain.Users;
 using Infrastructure.Authentication;
@@ -44,10 +44,7 @@ public static class DependencyInjection
     {
         services.Configure<OutboxOptions>(configuration.GetSection("Outbox"));
 
-        services.AddQuartz(options =>
-        {
-            options.UseMicrosoftDependencyInjectionJobFactory();
-        });
+        services.AddQuartz();
 
         services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
 

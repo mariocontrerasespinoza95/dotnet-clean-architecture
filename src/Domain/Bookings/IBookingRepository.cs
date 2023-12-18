@@ -1,4 +1,4 @@
-﻿using Domain.Aparments;
+﻿using Domain.Apartments;
 
 namespace Domain.Bookings;
 public interface IBookingRepository

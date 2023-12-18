@@ -1,7 +1,7 @@
 ﻿using Domain.Abstractions;
 using Domain.Shared;
 
-namespace Domain.Aparments;
+namespace Domain.Apartments;
 public sealed class Apartment : Entity<ApartmentId>
 {
     public Apartment(

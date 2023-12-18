@@ -1,2 +1,2 @@
-﻿namespace Domain.Aparments;
+﻿namespace Domain.Apartments;
 public record Name(string Value);

@@ -1,4 +1,4 @@
-﻿namespace Domain.Aparments;
+﻿namespace Domain.Apartments;
 
 public sealed record ApartmentId(Guid Value)
 {

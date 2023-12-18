@@ -2,7 +2,7 @@
 using Application.Abstractions.Messaging;
 using Application.Exceptions;
 using Domain.Abstractions;
-using Domain.Aparments;
+using Domain.Apartments;
 using Domain.Bookings;
 using Domain.Users;
 

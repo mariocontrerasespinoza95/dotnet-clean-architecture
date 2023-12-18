@@ -1,4 +1,4 @@
-﻿namespace Domain.Aparments;
+﻿namespace Domain.Apartments;
 public interface IApartmentRepository
 {
     Task<Apartment?> GetByIdAsync(ApartmentId id, CancellationToken cancellationToken = default);

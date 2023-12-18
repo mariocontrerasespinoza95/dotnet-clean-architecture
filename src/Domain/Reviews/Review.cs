@@ -1,5 +1,5 @@
 ﻿using Domain.Abstractions;
-using Domain.Aparments;
+using Domain.Apartments;
 using Domain.Bookings;
 using Domain.Reviews.Events;
 using Domain.Users;

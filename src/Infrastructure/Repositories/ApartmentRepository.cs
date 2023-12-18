@@ -1,4 +1,4 @@
-﻿using Domain.Aparments;
+﻿using Domain.Apartments;
 
 namespace Infrastructure.Repositories;
 internal class ApartmentRepository : Repository<Apartment, ApartmentId>, IApartmentRepository

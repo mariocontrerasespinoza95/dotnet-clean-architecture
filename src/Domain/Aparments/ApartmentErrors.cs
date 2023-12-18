@@ -1,6 +1,6 @@
 ﻿using Domain.Abstractions;
 
-namespace Domain.Aparments;
+namespace Domain.Apartments;
 public static class ApartmentErrors
 {
     public static Error NotFound = new(

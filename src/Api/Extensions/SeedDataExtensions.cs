@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions.Data;
 using Bogus;
 using Dapper;
-using Domain.Aparments;
+using Domain.Apartments;
 
 namespace Api.Extensions;
 

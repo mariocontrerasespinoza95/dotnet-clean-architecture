@@ -1,4 +1,4 @@
-﻿using Domain.Aparments;
+﻿using Domain.Apartments;
 using Domain.Bookings;
 using Domain.Reviews;
 using Domain.Users;
