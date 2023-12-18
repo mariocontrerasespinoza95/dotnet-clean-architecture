@@ -1,15 +1,10 @@
 ﻿using Domain.Abstractions;
 using Domain.Users.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Users;
-public sealed class User : Entity
+public sealed class User : Entity<UserId>
 {
-    private User(Guid id, FirstName firstName, LastName lastName, Email email)
+    private User(UserId id, FirstName firstName, LastName lastName, Email email)
         : base(id)
     {
         FirstName = firstName;
@@ -29,7 +24,7 @@ public sealed class User : Entity
 
     public static User Create(FirstName firstName, LastName lastName, Email email)
     {
-        var user = new User(Guid.NewGuid(), firstName, lastName, email);
+        var user = new User(UserId.New(), firstName, lastName, email);
 
         user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id));
 

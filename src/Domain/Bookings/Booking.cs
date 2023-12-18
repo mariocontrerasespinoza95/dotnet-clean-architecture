@@ -2,14 +2,15 @@
 using Domain.Aparments;
 using Domain.Bookings.Events;
 using Domain.Shared;
+using Domain.Users;
 
 namespace Domain.Bookings;
-public sealed class Booking : Entity
+public sealed class Booking : Entity<BookingId>
 {
     private Booking(
-        Guid id,
-        Guid apartmentId,
-        Guid userId,
+        BookingId id,
+        ApartmentId apartmentId,
+        UserId userId,
         DateRange duration,
         Money priceForPeriod,
         Money cleaningFee,
@@ -34,8 +35,8 @@ public sealed class Booking : Entity
     {
     }
 
-    public Guid ApartmentId { get; private set; }
-    public Guid UserId { get; private set; }
+    public ApartmentId ApartmentId { get; private set; }
+    public UserId UserId { get; private set; }
     public DateRange Duration { get; private set; }
     public Money PriceForPeriod { get; private set; }
     public Money CleaningFee { get; private set; }
@@ -50,14 +51,14 @@ public sealed class Booking : Entity
 
     public static Booking Reserve(
         Apartment apartment,
-        Guid userId,
+        UserId userId,
         DateRange duration,
         DateTime utcNow,
         PricingService pricingService)
     {
         var pricingDetails = pricingService.CalculatePrice(apartment, duration);
         var booking = new Booking(
-            Guid.NewGuid(),
+            BookingId.New(),
             apartment.Id,
             userId,
             duration,

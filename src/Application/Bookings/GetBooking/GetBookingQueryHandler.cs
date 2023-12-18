@@ -34,7 +34,7 @@ internal sealed class GetBookingQueryHandler : IQueryHandler<GetBookingQuery, Bo
                 cleaning_fee_currency AS CleaningFeeCurrency,
                 amenities_up_charge_amount AS AmenitiesUpChargeAmount,
                 amenities_up_charge_currency AS AmenitiesUpChargeCurrency,
-                total_price_amount AS TotalPriceAmount
+                total_price_amount AS TotalPriceAmount,
                 total_price_currency AS TotalPriceCurrency,
                 duration_start AS DurationStart,
                 duration_end AS DurationEnd,

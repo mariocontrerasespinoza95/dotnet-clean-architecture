@@ -3,7 +3,7 @@ using Domain.Bookings;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
-internal sealed class BookingRepository : Repository<Booking>, IBookingRepository
+internal sealed class BookingRepository : Repository<Booking, BookingId>, IBookingRepository
 {
     private static readonly BookingStatus[] ActiveBookingStatuses =
     {
