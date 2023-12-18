@@ -9,6 +9,7 @@ services:
       dockerfile: src/Api/Dockerfile
     depends_on:
      - db
+     - idp
 
   db:
     image: postgres:latest
@@ -21,3 +22,16 @@ services:
      - ./.containers/database:/var/lib/postgresql/data
     ports:
      - 5432:5432
+  
+  idp:
+    image: jboss/keycloak:latest
+    container_name: Identity
+    environment:
+     - KEYCLOAK_USER=admin
+     - KEYCLOAK_PASSWORD=admin  
+     - KEYCLOAK_IMPORT=/tmp/bookify-realm-export.json
+    volumes:
+     - ./.containers/identity:/opt/jboss/keycloak/standalone/data
+     - ./.files/bookify-realm-export.json:/tmp/bookify-realm-export.json
+    ports:
+     - 18080:8080
