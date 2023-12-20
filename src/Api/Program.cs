@@ -1,16 +1,24 @@
 using Api.Extensions;
 using Application;
 using Infrastructure;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Host.UseSerilog((context, configuration) =>
+{
+    configuration.ReadFrom.Configuration(context.Configuration);
+    configuration.Enrich.WithCorrelationIdHeader();
+});
 
 var app = builder.Build();
 
@@ -23,6 +31,8 @@ if (app.Environment.IsDevelopment())
 
     //app.SeedData();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
