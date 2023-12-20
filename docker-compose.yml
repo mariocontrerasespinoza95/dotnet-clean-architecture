@@ -1,5 +1,8 @@
 version: '3.4'
 
+networks:
+  loki:
+
 services:
   api:
     image: ${DOCKER_REGISTRY-}api
@@ -8,8 +11,9 @@ services:
       context: .
       dockerfile: src/Api/Dockerfile
     depends_on:
-     - db
-     - idp
+      - db
+      - idp
+      - loki
 
   db:
     image: postgres:latest
@@ -35,3 +39,25 @@ services:
      - ./.files/bookify-realm-export.json:/tmp/bookify-realm-export.json
     ports:
      - 18080:8080
+
+  loki:
+    container_name: Loki
+    image: grafana/loki:master
+    ports:
+       - 3100:3100
+    command: -config.file=/etc/loki/local-config.yaml
+    healthcheck:
+        test: wget -q --tries=1 -O- http://localhost:3100/ready 
+        interval: 3s
+        timeout: 3s
+        retries: 10
+        start_period: 10s
+
+  grafana:
+    container_name: Grafana
+    image: grafana/grafana:master
+    ports:
+      - "3000:3000"
+    depends_on:
+        loki:
+            condition: service_healthy
