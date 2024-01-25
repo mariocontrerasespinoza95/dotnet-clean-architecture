@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Authentication;
+using Application.Abstractions.Caching;
 using Application.Abstractions.Clock;
 using Application.Abstractions.Data;
 using Application.Abstractions.Email;
@@ -9,6 +10,7 @@ using Domain.Bookings;
 using Domain.Users;
 using Infrastructure.Authentication;
 using Infrastructure.Authorization;
+using Infrastructure.Caching;
 using Infrastructure.Clock;
 using Infrastructure.Data;
 using Infrastructure.Email;
@@ -22,7 +24,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Quartz;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Infrastructure;
 public static class DependencyInjection
@@ -42,6 +43,8 @@ public static class DependencyInjection
         AddAuthentication(services, configuration);
 
         AddAuthorization(services, configuration);
+
+        AddCaching(services, configuration);
 
         return services;
     }
@@ -124,5 +127,15 @@ public static class DependencyInjection
         services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
         services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+    }
+
+    private static void AddCaching(IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("Cache") ?? 
+                               throw new ArgumentNullException(nameof(configuration));
+
+        services.AddStackExchangeRedisCache(options => options.Configuration = connectionString);
+
+        services.AddSingleton<ICacheService, CacheService>();
     }
 }
