@@ -1,6 +1,7 @@
 ﻿using Application.Users.GetLoggedInUser;
 using Application.Users.LoginUser;
 using Application.Users.RegisterUser;
+using Infrastructure.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("me")]
-    [Authorize(Roles = Roles.Registered)]
+    [HasPermission(Permissions.UsersRead)]
     public async Task<IActionResult> GetLoggedInUser(CancellationToken cancellationToken)
     {
         var query = new GetLoggedInUserQuery();

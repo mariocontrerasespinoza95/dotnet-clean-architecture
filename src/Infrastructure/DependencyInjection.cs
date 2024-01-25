@@ -16,11 +16,13 @@ using Infrastructure.Outbox;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Quartz;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Infrastructure;
 public static class DependencyInjection
@@ -118,5 +120,9 @@ public static class DependencyInjection
         services.AddScoped<AuthorizationService>();
 
         services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
+
+        services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
+        services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
     }
 }
