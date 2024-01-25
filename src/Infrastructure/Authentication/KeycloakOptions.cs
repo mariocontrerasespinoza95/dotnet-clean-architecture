@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Authentication;
 
-public sealed class KeycloakOptions
+public sealed class KeyCloakOptions
 {
     public string AdminUrl { get; init; } = string.Empty;
 

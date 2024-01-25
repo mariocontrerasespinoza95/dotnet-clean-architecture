@@ -46,6 +46,8 @@ public static class DependencyInjection
 
         AddCaching(services, configuration);
 
+        AddHealthChecks(services, configuration);
+
         return services;
     }
 
@@ -94,13 +96,13 @@ public static class DependencyInjection
 
         services.ConfigureOptions<JwtBearerOptionsSetup>();
 
-        services.Configure<KeycloakOptions>(configuration.GetSection("Keycloak"));
+        services.Configure<KeyCloakOptions>(configuration.GetSection("KeyCloack"));
 
         services.AddTransient<AdminAuthorizationDelegatingHandler>();
 
         services.AddHttpClient<Application.Abstractions.Authentication.IAuthenticationService, Authentication.AuthenticationService>((serviceProvider, httpClient) =>
         {
-            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
+            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeyCloakOptions>>().Value;
 
             httpClient.BaseAddress = new Uri(keycloakOptions.AdminUrl);
         })
@@ -108,7 +110,7 @@ public static class DependencyInjection
 
         services.AddHttpClient<IJwtService, JwtService>((serviceProvider, httpClient) =>
         {
-            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
+            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeyCloakOptions>>().Value;
 
             httpClient.BaseAddress = new Uri(keycloakOptions.TokenUrl);
         });
@@ -137,5 +139,13 @@ public static class DependencyInjection
         services.AddStackExchangeRedisCache(options => options.Configuration = connectionString);
 
         services.AddSingleton<ICacheService, CacheService>();
+    }
+
+    private static void AddHealthChecks(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddHealthChecks()
+            .AddNpgSql(configuration.GetConnectionString("Database")!)
+            .AddRedis(configuration.GetConnectionString("Cache")!)
+            .AddUrlGroup(new Uri(configuration["KeyCloack:BaseUrl"]!), HttpMethod.Get, "keycloack");
     }
 }

@@ -8,9 +8,9 @@ namespace Infrastructure.Authentication;
 
 public sealed class AdminAuthorizationDelegatingHandler : DelegatingHandler
 {
-    private readonly KeycloakOptions _keycloakOptions;
+    private readonly KeyCloakOptions _keycloakOptions;
 
-    public AdminAuthorizationDelegatingHandler(IOptions<KeycloakOptions> keycloakOptions)
+    public AdminAuthorizationDelegatingHandler(IOptions<KeyCloakOptions> keycloakOptions)
     {
         _keycloakOptions = keycloakOptions.Value;
     }
