@@ -12,11 +12,11 @@ internal sealed class JwtService : IJwtService
         "Failed to acquire access token do to authentication failure");
 
     private readonly HttpClient _httpClient;
-    private readonly KeyCloakOptions _keycloakOptions;
+    private readonly KeycloakOptions _keycloakOptions;
 
     public JwtService(
         HttpClient httpClient,
-        IOptions<KeyCloakOptions> keycloakOptions)
+        IOptions<KeycloakOptions> keycloakOptions)
     {
         _httpClient = httpClient;
         _keycloakOptions = keycloakOptions.Value;

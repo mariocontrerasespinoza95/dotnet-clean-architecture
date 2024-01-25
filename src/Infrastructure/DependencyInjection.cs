@@ -99,13 +99,13 @@ public static class DependencyInjection
 
         services.ConfigureOptions<JwtBearerOptionsSetup>();
 
-        services.Configure<KeyCloakOptions>(configuration.GetSection("KeyCloack"));
+        services.Configure<KeycloakOptions>(configuration.GetSection("KeyCloack"));
 
         services.AddTransient<AdminAuthorizationDelegatingHandler>();
 
         services.AddHttpClient<Application.Abstractions.Authentication.IAuthenticationService, Authentication.AuthenticationService>((serviceProvider, httpClient) =>
         {
-            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeyCloakOptions>>().Value;
+            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
 
             httpClient.BaseAddress = new Uri(keycloakOptions.AdminUrl);
         })
@@ -113,7 +113,7 @@ public static class DependencyInjection
 
         services.AddHttpClient<IJwtService, JwtService>((serviceProvider, httpClient) =>
         {
-            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeyCloakOptions>>().Value;
+            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
 
             httpClient.BaseAddress = new Uri(keycloakOptions.TokenUrl);
         });

@@ -1,12 +1,13 @@
 ﻿using Domain.Abstractions;
 
 namespace Domain.UnitTests.Infrastructure;
+
 public abstract class BaseTest
 {
     public static T AssertDomainEventWasPublished<T>(Entity entity)
         where T : IDomainEvent
     {
-        var domainEvent = entity.GetDomainEvents().OfType<T>().SingleOrDefault();
+        T? domainEvent = entity.GetDomainEvents().OfType<T>().SingleOrDefault();
 
         if (domainEvent == null)
         {
