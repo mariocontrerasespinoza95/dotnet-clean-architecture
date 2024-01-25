@@ -2,4 +2,4 @@
 
 namespace Domain.Bookings.Events;
 
-public sealed record BookingCancelledDomainEvent(BookingId BookingId) : IDomainEvent;
+public sealed record BookingCancelledDomainEvent(Guid BookingId) : IDomainEvent;

@@ -2,10 +2,10 @@
 using Domain.Shared;
 
 namespace Domain.Apartments;
-public sealed class Apartment : Entity<ApartmentId>
+public sealed class Apartment : Entity
 {
     public Apartment(
-        ApartmentId id,
+        Guid id,
         Name name,
         Description description,
         Address address,

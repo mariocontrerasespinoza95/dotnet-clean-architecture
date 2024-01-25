@@ -17,7 +17,6 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Host.UseSerilog((context, configuration) =>
 {
     configuration.ReadFrom.Configuration(context.Configuration);
-    configuration.Enrich.WithCorrelationIdHeader();
 });
 
 var app = builder.Build();

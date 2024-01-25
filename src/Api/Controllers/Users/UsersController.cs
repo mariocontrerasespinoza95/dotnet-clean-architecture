@@ -1,8 +1,8 @@
-﻿using Application.Users.LoginUser;
+﻿using Application.Users.GetLoggedInUser;
+using Application.Users.LoginUser;
 using Application.Users.RegisterUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.Users;
@@ -16,6 +16,17 @@ public class UsersController : ControllerBase
     public UsersController(ISender sender)
     {
         _sender = sender;
+    }
+
+    [HttpGet("me")]
+    [Authorize(Roles = Roles.Registered)]
+    public async Task<IActionResult> GetLoggedInUser(CancellationToken cancellationToken)
+    {
+        var query = new GetLoggedInUserQuery();
+
+        var result = await _sender.Send(query, cancellationToken);
+
+        return Ok(result.Value);
     }
 
     [AllowAnonymous]

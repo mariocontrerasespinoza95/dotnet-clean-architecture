@@ -28,7 +28,7 @@ public class ReserveBookingTests
 
         var userRepositoryMock = new Mock<IUserRepository>();
         userRepositoryMock
-            .Setup(u => u.GetByIdAsync(It.IsAny<UserId>(), It.IsAny<CancellationToken>()))
+            .Setup(u => u.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((User?)null);
 
         var handler = new ReserveBookingCommandHandler(
@@ -58,12 +58,12 @@ public class ReserveBookingTests
 
         var userRepositoryMock = new Mock<IUserRepository>();
         userRepositoryMock
-            .Setup(u => u.GetByIdAsync(It.IsAny<UserId>(), It.IsAny<CancellationToken>()))
+            .Setup(u => u.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(User);
 
         var apartmentRepositoryMock = new Mock<IApartmentRepository>();
         apartmentRepositoryMock
-            .Setup(u => u.GetByIdAsync(It.IsAny<ApartmentId>(), It.IsAny<CancellationToken>()))
+            .Setup(u => u.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Apartment?)null);
 
 

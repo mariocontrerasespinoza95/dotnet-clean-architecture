@@ -3,7 +3,7 @@
 namespace Domain.UnitTests.Infrastructure;
 public abstract class BaseTest
 {
-    public static T AssertDomainEventWasPublished<T>(IEntity entity)
+    public static T AssertDomainEventWasPublished<T>(Entity entity)
         where T : IDomainEvent
     {
         var domainEvent = entity.GetDomainEvents().OfType<T>().SingleOrDefault();

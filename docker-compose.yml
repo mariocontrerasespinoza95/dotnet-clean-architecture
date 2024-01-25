@@ -1,8 +1,5 @@
 version: '3.4'
 
-networks:
-  loki:
-
 services:
   api:
     image: ${DOCKER_REGISTRY-}api
@@ -13,51 +10,45 @@ services:
     depends_on:
       - db
       - idp
-      - loki
+
 
   db:
     image: postgres:latest
     container_name: Db
     environment:
-     - POSTGRES_DB=bookify
-     - POSTGRES_USER=postgres
-     - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=bookify
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
-     - ./.containers/database:/var/lib/postgresql/data
+      - ./.containers/database:/var/lib/postgresql/data
     ports:
-     - 5432:5432
-  
+      - 5432:5432
+
   idp:
     image: jboss/keycloak:latest
     container_name: Identity
     environment:
-     - KEYCLOAK_USER=admin
-     - KEYCLOAK_PASSWORD=admin  
-     - KEYCLOAK_IMPORT=/tmp/bookify-realm-export.json
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/tmp/realm-export.json
     volumes:
-     - ./.containers/identity:/opt/jboss/keycloak/standalone/data
-     - ./.files/bookify-realm-export.json:/tmp/bookify-realm-export.json
+      - ./.containers/identity:/opt/jboss/keycloak/standalone/data
+      - ./.files/realm-export.json:/tmp/realm-export.json
     ports:
-     - 18080:8080
+      - 18080:8080
 
-  loki:
-    container_name: Loki
-    image: grafana/loki:master
+  seq:
+    image: datalust/seq:latest
+    container_name: Seq
+    environment:
+      - ACCEPT_EULA=Y
     ports:
-       - 3100:3100
-    command: -config.file=/etc/loki/local-config.yaml
-    healthcheck:
-        test: wget -q --tries=1 -O- http://localhost:3100/ready 
-        interval: 3s
-        timeout: 3s
-        retries: 10
-        start_period: 10s
+      - 5341:5341
+      - 8081:80
 
-  grafana:
-    container_name: Grafana
-    image: grafana/grafana:master
+  redis:
+    image: redis:latest
+    container_name: Redis
+    restart: always
     ports:
-      - "3000:3000"
-    depends_on:
-        loki:
-            condition: service_healthy
+      - '6379:6379'

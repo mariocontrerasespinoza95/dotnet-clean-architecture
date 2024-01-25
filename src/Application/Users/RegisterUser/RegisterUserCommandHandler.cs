@@ -40,6 +40,6 @@ internal sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserC
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return user.Id.Value;
+        return user.Id;
     }
 }

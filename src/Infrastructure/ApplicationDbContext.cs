@@ -50,7 +50,7 @@ public sealed class ApplicationDbContext : DbContext, IUnitOfWork
     private void AddDomainEventsAsOutboxMessages()
     {
         var domainEvents = ChangeTracker
-            .Entries<IEntity>()
+            .Entries<Entity>()
             .Select(entry => entry.Entity)
             .SelectMany(entity =>
             {
