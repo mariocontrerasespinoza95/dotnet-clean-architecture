@@ -3,6 +3,7 @@ using Application.Abstractions.Caching;
 using Application.Abstractions.Clock;
 using Application.Abstractions.Data;
 using Application.Abstractions.Email;
+using Asp.Versioning;
 using Dapper;
 using Domain.Abstractions;
 using Domain.Apartments;
@@ -42,11 +43,13 @@ public static class DependencyInjection
 
         AddAuthentication(services, configuration);
 
-        AddAuthorization(services, configuration);
+        AddAuthorization(services);
 
         AddCaching(services, configuration);
 
         AddHealthChecks(services, configuration);
+
+        AddApiVersioning(services);
 
         return services;
     }
@@ -120,7 +123,7 @@ public static class DependencyInjection
         services.AddScoped<IUserContext, UserContext>();
     }
 
-    private static void AddAuthorization(IServiceCollection services, IConfiguration configuration)
+    private static void AddAuthorization(IServiceCollection services)
     {
         services.AddScoped<AuthorizationService>();
 
@@ -133,7 +136,7 @@ public static class DependencyInjection
 
     private static void AddCaching(IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("Cache") ?? 
+        var connectionString = configuration.GetConnectionString("Cache") ??
                                throw new ArgumentNullException(nameof(configuration));
 
         services.AddStackExchangeRedisCache(options => options.Configuration = connectionString);
@@ -147,5 +150,22 @@ public static class DependencyInjection
             .AddNpgSql(configuration.GetConnectionString("Database")!)
             .AddRedis(configuration.GetConnectionString("Cache")!)
             .AddUrlGroup(new Uri(configuration["KeyCloack:BaseUrl"]!), HttpMethod.Get, "keycloack");
+    }
+
+    private static void AddApiVersioning(IServiceCollection services)
+    {
+        services
+            .AddApiVersioning(options =>
+            {
+                options.DefaultApiVersion = new ApiVersion(1);
+                options.ReportApiVersions = true;
+                options.ApiVersionReader = new UrlSegmentApiVersionReader();
+            })
+            .AddMvc()
+            .AddApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'V";
+                options.SubstituteApiVersionInUrl = true;
+            });
     }
 }
