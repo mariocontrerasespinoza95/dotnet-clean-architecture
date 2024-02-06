@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Domain.Abstractions;
 public class Result
 {
-    public Result(bool isSuccess, Error error)
+    protected Result(bool isSuccess, Error error)
     {
         if (isSuccess && error != Error.None)
         {

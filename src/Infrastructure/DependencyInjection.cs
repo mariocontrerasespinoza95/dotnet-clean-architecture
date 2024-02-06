@@ -67,7 +67,7 @@ public static class DependencyInjection
 
     private static void AddPersistence(IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString =
+        string? connectionString =
                     configuration.GetConnectionString("Database") ??
                     throw new ArgumentNullException(nameof(configuration));
 
@@ -105,7 +105,7 @@ public static class DependencyInjection
 
         services.AddHttpClient<Application.Abstractions.Authentication.IAuthenticationService, Authentication.AuthenticationService>((serviceProvider, httpClient) =>
         {
-            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
+            KeycloakOptions? keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
 
             httpClient.BaseAddress = new Uri(keycloakOptions.AdminUrl);
         })
@@ -113,7 +113,7 @@ public static class DependencyInjection
 
         services.AddHttpClient<IJwtService, JwtService>((serviceProvider, httpClient) =>
         {
-            var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
+            KeycloakOptions? keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
 
             httpClient.BaseAddress = new Uri(keycloakOptions.TokenUrl);
         });
@@ -136,8 +136,8 @@ public static class DependencyInjection
 
     private static void AddCaching(IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("Cache") ??
-                               throw new ArgumentNullException(nameof(configuration));
+        string? connectionString = configuration.GetConnectionString("Cache") ??
+                                   throw new ArgumentNullException(nameof(configuration));
 
         services.AddStackExchangeRedisCache(options => options.Configuration = connectionString);
 

@@ -21,11 +21,11 @@ internal sealed class PermissionAuthorizationHandler : AuthorizationHandler<Perm
             return;
         }
 
-        using var scope = _serviceProvider.CreateScope();
+        using IServiceScope? scope = _serviceProvider.CreateScope();
 
-        var authorizationService = scope.ServiceProvider.GetService<AuthorizationService>();
+        AuthorizationService? authorizationService = scope.ServiceProvider.GetService<AuthorizationService>();
 
-        var identityId = context.User.GetIdentityId();
+        string? identityId = context.User.GetIdentityId();
 
         HashSet<string> permissions = await authorizationService!.GetPermissionsForUserAsync(identityId);
 

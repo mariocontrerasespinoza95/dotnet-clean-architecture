@@ -58,7 +58,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
             services.Configure<RedisCacheOptions>(redisCacheOptions =>
                 redisCacheOptions.Configuration = _redisContainer.GetConnectionString());
 
-            var keycloakAddress = _keycloakContainer.GetBaseAddress();
+            string? keycloakAddress = _keycloakContainer.GetBaseAddress();
 
             services.Configure<KeycloakOptions>(o =>
             {

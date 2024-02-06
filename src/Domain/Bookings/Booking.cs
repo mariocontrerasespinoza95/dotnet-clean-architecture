@@ -4,6 +4,7 @@ using Domain.Bookings.Events;
 using Domain.Shared;
 
 namespace Domain.Bookings;
+
 public sealed class Booking : Entity
 {
     private Booking(
@@ -55,7 +56,7 @@ public sealed class Booking : Entity
         DateTime utcNow,
         PricingService pricingService)
     {
-        var pricingDetails = pricingService.CalculatePrice(apartment, duration);
+        PricingDetails? pricingDetails = pricingService.CalculatePrice(apartment, duration);
         var booking = new Booking(
             Guid.NewGuid(),
             apartment.Id,

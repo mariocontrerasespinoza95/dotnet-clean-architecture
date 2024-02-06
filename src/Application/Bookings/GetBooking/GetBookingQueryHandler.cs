@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.Authentication;
+﻿using System.Data;
+using Application.Abstractions.Authentication;
 using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
 using Dapper;
@@ -21,30 +22,30 @@ internal sealed class GetBookingQueryHandler : IQueryHandler<GetBookingQuery, Bo
 
     public async Task<Result<BookingResponse>> Handle(GetBookingQuery request, CancellationToken cancellationToken)
     {
-        using var connection = _sqlConnectionFactory.CreateConnection();
+        using IDbConnection? connection = _sqlConnectionFactory.CreateConnection();
 
-        var sql = """
-            SELECT
-                id as Id,
-                apartment_id AS ApartmentId,
-                user_id AS UserId,
-                status AS Status,
-                price_for_period_amount AS PriceAmount,
-                price_for_period_currency AS PriceCurrency,
-                cleaning_fee_amount AS CleaningFeeAmount,
-                cleaning_fee_currency AS CleaningFeeCurrency,
-                amenities_up_charge_amount AS AmenitiesUpChargeAmount,
-                amenities_up_charge_currency AS AmenitiesUpChargeCurrency,
-                total_price_amount AS TotalPriceAmount,
-                total_price_currency AS TotalPriceCurrency,
-                duration_start AS DurationStart,
-                duration_end AS DurationEnd,
-                created_on_utc AS CreatedOnUtc
-            FROM bookings
-            WHERE id = @BookingId
-            """;
+        string? sql = """
+                      SELECT
+                          id as Id,
+                          apartment_id AS ApartmentId,
+                          user_id AS UserId,
+                          status AS Status,
+                          price_for_period_amount AS PriceAmount,
+                          price_for_period_currency AS PriceCurrency,
+                          cleaning_fee_amount AS CleaningFeeAmount,
+                          cleaning_fee_currency AS CleaningFeeCurrency,
+                          amenities_up_charge_amount AS AmenitiesUpChargeAmount,
+                          amenities_up_charge_currency AS AmenitiesUpChargeCurrency,
+                          total_price_amount AS TotalPriceAmount,
+                          total_price_currency AS TotalPriceCurrency,
+                          duration_start AS DurationStart,
+                          duration_end AS DurationEnd,
+                          created_on_utc AS CreatedOnUtc
+                      FROM bookings
+                      WHERE id = @BookingId
+                      """;
 
-        var booking = await connection.QueryFirstOrDefaultAsync<BookingResponse>(
+        BookingResponse? booking = await connection.QueryFirstOrDefaultAsync<BookingResponse>(
             sql,
             new
             {

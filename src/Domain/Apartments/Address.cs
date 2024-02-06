@@ -1,4 +1,5 @@
 ﻿namespace Domain.Apartments;
+
 public record Address(
     string Country,
     string State,

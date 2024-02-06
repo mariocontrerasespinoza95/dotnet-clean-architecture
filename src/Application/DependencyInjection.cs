@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.Behaviors;
+﻿using System.Reflection;
+using Application.Abstractions.Behaviors;
 using Domain.Bookings;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +9,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        var assembly = typeof(DependencyInjection).Assembly;
+        Assembly? assembly = typeof(DependencyInjection).Assembly;
 
         services.AddMediatR(configuration =>
         {

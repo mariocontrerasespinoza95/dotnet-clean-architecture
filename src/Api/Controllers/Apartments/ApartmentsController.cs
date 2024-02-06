@@ -1,5 +1,6 @@
 ﻿using Application.Apartments.SearchApartments;
 using Asp.Versioning;
+using Domain.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ public class ApartmentsController : ControllerBase
     {
         var query = new SearchApartmentsQuery(startDate, endDate);
 
-        var result = await _sender.Send(query, cancellationToken);
+        Result<IReadOnlyList<ApartmentResponse>> result = await _sender.Send(query, cancellationToken);
 
         return Ok(result.Value);
     }

@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.Data;
+﻿using System.Data;
+using Application.Abstractions.Data;
 using Application.Abstractions.Messaging;
 using Dapper;
 using Domain.Abstractions;
@@ -28,7 +29,7 @@ internal sealed class SearchApartmentsQueryHandler : IQueryHandler<SearchApartme
             return new List<ApartmentResponse>();
         }
 
-        using var connection = _sqlConnectionFactory.CreateConnection();
+        using IDbConnection? connection = _sqlConnectionFactory.CreateConnection();
 
         const string sql = """
             SELECT
@@ -55,7 +56,7 @@ internal sealed class SearchApartmentsQueryHandler : IQueryHandler<SearchApartme
             )
             """;
 
-        var apartments = await connection
+        IEnumerable<ApartmentResponse>? apartments = await connection
             .QueryAsync<ApartmentResponse, AddressResponse, ApartmentResponse>(
                 sql,
                 (apartment, address) =>

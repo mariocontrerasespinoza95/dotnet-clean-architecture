@@ -1,0 +1,38 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.4"
+services:
+  api:
+    build:
+      context: "C:\\Workspace\\dotnet-clean-architecture"
+      dockerfile: "src/Api/Dockerfile"
+      target: "base"
+      args:
+        BUILD_CONFIGURATION: "Debug"
+    command: []
+    entrypoint:
+    - "/opt/rider-debugger/linux-x64/dotnet/dotnet"
+    - "/opt/rider-debugger/JetBrains.Debugger.Worker.exe"
+    - "--mode=server"
+    - "--frontend-port=57100"
+    - "--backend-port=57300"
+    - "--timeout=60"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+      RIDER_DEBUGGER_LOG_DIR: "/var/opt/rider-debugger"
+      RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
+    image: "api:dev"
+    ports:
+    - "127.0.0.1:57000:57100"
+    - "127.0.0.1:51546:57300"
+    volumes:
+    - "C:\\Users\\mario\\AppData\\Roaming\\Microsoft\\UserSecrets:/home/app/.microsoft/usersecrets"
+    - "C:\\Users\\mario\\AppData\\Roaming\\ASP.NET\\Https:/home/app/.aspnet/https"
+    - "C:\\Users\\mario\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Workspace\\dotnet-clean-architecture\\src\\Api:/app:rw"
+    - "C:\\Workspace\\dotnet-clean-architecture:/src:rw"
+    - "C:\\Users\\mario\\AppData\\Local\\JetBrains\\RiderRemoteDebugger\\2023.3.3\\\
+      Linux64:/opt/rider-debugger"
+    - "C:\\Users\\mario\\AppData\\Local\\JetBrains\\Installations\\Rider233\\bin:/etc/opt/rider-debugger/backend-log.xml"
+    - "C:\\Users\\mario\\AppData\\Local\\JetBrains\\Rider2023.3\\log\\DebuggerWorker\\\
+      JetBrains.Debugger.Worker.2024_2_05_22_13_29:/var/opt/rider-debugger:rw"
+    working_dir: "/app"

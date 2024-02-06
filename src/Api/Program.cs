@@ -1,15 +1,13 @@
 using Api.Extensions;
 using Api.OpenApi;
 using Application;
-using Application.Abstractions.Data;
-using Dapper;
+using Asp.Versioning.ApiExplorer;
 using HealthChecks.UI.Client;
 using Infrastructure;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, configuration) =>
 {
@@ -28,19 +26,19 @@ builder.Services.AddHealthChecks();
 
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
-var app = builder.Build();
+WebApplication? app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        var descriptions = app.DescribeApiVersions();
+        IReadOnlyList<ApiVersionDescription>? descriptions = app.DescribeApiVersions();
 
-        foreach (var description in descriptions)
+        foreach (ApiVersionDescription? description in descriptions)
         {
-            var url = $"/swagger/{description.GroupName}/swagger.json";
-            var name = description.GroupName.ToUpperInvariant();
+            string? url = $"/swagger/{description.GroupName}/swagger.json";
+            string? name = description.GroupName.ToUpperInvariant();
             options.SwaggerEndpoint(url, name);
         }
     });

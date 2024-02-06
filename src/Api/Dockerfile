@@ -5,6 +5,7 @@ EXPOSE 5000
 EXPOSE 5001
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+RUN dotnet dev-certs https
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Api/Api.csproj", "src/Api/"]

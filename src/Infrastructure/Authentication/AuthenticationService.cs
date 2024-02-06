@@ -30,7 +30,7 @@ internal sealed class AuthenticationService : IAuthenticationService
             }
         ];
 
-        var response = await _httpClient.PostAsJsonAsync(
+        HttpResponseMessage? response = await _httpClient.PostAsJsonAsync(
             "users",
             userRepresentationModel,
             cancellationToken);
@@ -43,18 +43,18 @@ internal sealed class AuthenticationService : IAuthenticationService
     {
         const string usersSegmentName = "users/";
 
-        var locationHeader = httpResponseMessage.Headers.Location?.PathAndQuery;
+        string? locationHeader = httpResponseMessage.Headers.Location?.PathAndQuery;
 
         if (locationHeader is null)
         {
             throw new InvalidOperationException("Location header can't be null");
         }
 
-        var userSegmentValueIndex = locationHeader.IndexOf(
+        int userSegmentValueIndex = locationHeader.IndexOf(
             usersSegmentName,
             StringComparison.InvariantCultureIgnoreCase);
 
-        var userIdentityId = locationHeader.Substring(
+        string? userIdentityId = locationHeader.Substring(
             userSegmentValueIndex + usersSegmentName.Length);
 
         return userIdentityId;

@@ -1,4 +1,5 @@
 ﻿namespace Domain.Apartments;
+
 public enum Amenity
 {
     WiFi = 1,

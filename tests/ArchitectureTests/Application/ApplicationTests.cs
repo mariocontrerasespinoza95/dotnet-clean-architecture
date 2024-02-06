@@ -9,7 +9,7 @@ public class ApplicationTests : BaseTest
     [Fact]
     public void CommandHandler_Should_HaveNameEndingWith_CommandHandler()
     {
-        var result = Types.InAssembly(ApplicationAssembly)
+        TestResult? result = Types.InAssembly(ApplicationAssembly)
             .That()
             .ImplementInterface(typeof(ICommandHandler<>))
             .Or()
@@ -23,7 +23,7 @@ public class ApplicationTests : BaseTest
     [Fact]
     public void QueryHandler_Should_HaveNameEndingWith_QueryHandler()
     {
-        var result = Types.InAssembly(ApplicationAssembly)
+        TestResult? result = Types.InAssembly(ApplicationAssembly)
             .That()
             .ImplementInterface(typeof(IQueryHandler<,>))
             .Should()
@@ -36,7 +36,7 @@ public class ApplicationTests : BaseTest
     [Fact]
     public void Validator_Should_HaveNameEndingWith_Validator()
     {
-        var result = Types.InAssembly(ApplicationAssembly)
+        TestResult? result = Types.InAssembly(ApplicationAssembly)
             .That()
             .Inherit(typeof(AbstractValidator<>))
             .Should()

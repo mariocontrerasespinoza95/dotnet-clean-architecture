@@ -8,7 +8,7 @@ public class DomainTests : BaseTest
     [Fact]
     public void DomainEvent_Should_Have_DomainEventPostfix()
     {
-        var result = Types.InAssembly(DomainAssembly)
+        TestResult? result = Types.InAssembly(DomainAssembly)
             .That()
             .ImplementInterface(typeof(IDomainEvent))
             .Should().HaveNameEndingWith("DomainEvent")

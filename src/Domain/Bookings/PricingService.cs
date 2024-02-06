@@ -6,7 +6,7 @@ public class PricingService
 {
     public PricingDetails CalculatePrice(Apartment apartment, DateRange period)
     {
-        var currency = apartment.Price.Currency;
+        Currency? currency = apartment.Price.Currency;
 
         var priceForPeriod = new Money(
             apartment.Price.Amount * period.LengthInDays,
